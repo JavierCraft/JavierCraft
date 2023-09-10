@@ -1,1 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD - Mahasiswa</title>
+    <style>
+        h1 {
+            color: green;
+        }
+        
+        h2 {
+            color: purple;
+        }
+        
+        label {
+            color: red; /* Warna pada elemen label */
+            display: block; /* Menjadikan label elemen blok */
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            background-color: yellow; 
+        }
+
+        button[type="submit"] {
+            background-color: orange; /* Warna latar belakang pada tombol submit */
+        }
+
+        /* Gaya untuk tombol "Cari" dan "Hapus" */
+        button[type="button"] {
+            background-color: orange; /* Warna latar belakang pada tombol */
+            color: white; /* Warna teks pada tombol */
+            border: none; /* Menghilangkan border pada tombol */
+            padding: 5px 10px; /* Padding pada tombol */
+            cursor: pointer; /* Mengubah ikon kursor menjadi tangan ketika mengarah ke tombol */
+        }
+
+        /* Gaya untuk tombol "Cari" saat dihover */
+        button[type="button"]:hover {
+            background-color: darkorange; /* Warna latar belakang saat hover */
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Logo - Gambar-->
+    <!-- Menampilkan gambar dari perangkat -->
+    <h2>Gambar dari Perangkat</h2>
+    <img src="test.jpg" alt="Gambar dari Perangkat" style="width: 300px; height: 200px;">
+
+    <!-- Menampilkan gambar dari direktori "downloads" -->
+    <h2>Gambar dari Downloads</h2>
+    <img src="downloads/test.jpg" alt="Gambar dari Downloads" style="width: 300px; height: 200px;">
+   
+   <h1>CRUD Mahasiswa Sederhanaa ==</h1>
+
+    <!-- Form untuk Input Data -->
+    <h2>Input Data</h2>
+
+    <form id="inputForm">
+        <label for="nama">Nama :</label>    
+        <input type="text" id="nama" required>
+
+        <label for="umur">Umur:</label>
+        <input type="number" id="umur" required>
+
+        <button type="submit">Tambah</button>
+    </form>
+
+    <h2>Input Data</h2>
+
+    <form id="inputgambar">
+        <label for="nama">Nama :</label>    
+        <input type="text" id="nama" required>
+
+        <label for="umur">Pilih Gambar:</label>
+
+        <button type="submit">Upload</button>
+    </form>
+
+    <!-- Form untuk Update Data -->
+    <h2 style="color: red;">Update Data</h2>
+    <form id="updateForm">
+        <label for="updateNama">Nama :</label>
+        <input type="text" id="updateNama" required style="border: 2px solid blue; padding: 5px;">
+
+        <label for="updateUmur">Umur :</label>
+        <input type="number" id="updateUmur" required style="border: 2px solid green; padding: 5px;">
+
+        <button type="submit" style="background-color: orange; color: white; border: none; padding: 10px;">Update</button>
+        <input type="hidden" id="dataId">
+    </form>
+
+    <!-- Form untuk Search Data -->
+    <h2>Cari Data</h2>
+    <input type="text" id="searchInput" placeholder="Cari Nama">
+    <button onclick="searchData()">Cari</button>
+
+    <!-- Tombol untuk Hapus Data -->
+    <h2>Hapus Data Mahasiswa</h2>
+    <input type="text" id="deleteInput" placeholder="ID Data">
+    <button onclick="deleteData()">Hapus</button>
+
+    </div>
+
+    <!-- Daftar Data -->
+    <div class="data-container">
+        <h2>-- Daftar Data ---</h2>
+        <ul id="daftarData"></ul>
+    </div>
+    </div>
+
+    <script>
+        // Data awal
+        let data = [];
+
+        // Fungsi untuk menampilkan data
+        function renderData() {
+            const daftarData = document.getElementById('daftarData');
+            daftarData.innerHTML = '';
+
+            data.forEach((item, index) => {
+                const li = document.createElement('li');
+                li.innerHTML = `${item.nama}, Umur: ${item.umur} <button onclick="editData(${index})">Edit</button>`;
+                daftarData.appendChild(li);
+            });
+        }
+
+        // Fungsi untuk menambahkan data
+        document.getElementById('inputForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const nama = document.getElementById('nama').value;
+            const umur = document.getElementById('umur').value;
+
+            if (!nama || !umur) {
+                alert('Nama dan Umur harus diisi.');
+                return;
+            }
+
+            data.push({ nama, umur });
+            renderData();
+            this.reset();
+        });
+
+        // Fungsi untuk mengedit data
+        function editData(index) {
+            const dataToEdit = data[index];
+            document.getElementById('updateNama').value = dataToEdit.nama;
+            document.getElementById('updateUmur').value = dataToEdit.umur;
+            document.getElementById('dataId').value = index;
+        }
+
+        // Fungsi untuk mengupdate data
+        document.getElementById('updateForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const index = document.getElementById('dataId').value;
+            const updatedNama = document.getElementById('updateNama').value;
+            const updatedUmur = document.getElementById('updateUmur').value;
+
+            if (!updatedNama || !updatedUmur) {
+                alert('Nama dan Umur harus diisi.');
+                return;
+            }
+
+            data[index] = { nama: updatedNama, umur: updatedUmur };
+            renderData();
+            this.reset();
+        });
+
+        // Fungsi untuk mencari data
+        function searchData() {
+            const keyword = document.getElementById('searchInput').value.toLowerCase();
+            const searchResult = data.filter(item => item.nama.toLowerCase().includes(keyword));
+            const daftarData = document.getElementById('daftarData');
+            daftarData.innerHTML = '';
+
+            searchResult.forEach((item, index) => {
+                const li = document.createElement('li');
+                li.innerHTML = `${item.nama}, Umur: ${item.umur} <button onclick="editData(${index})">Edit</button>`;
+                daftarData.appendChild(li);
+            });
+        }
+
+        // Fungsi untuk menghapus data berdasarkan nama
+        function deleteData() {
+            const namaToDelete = document.getElementById('deleteInput').value;
+            const indexToDelete = data.findIndex(item => item.nama === namaToDelete);
+
+            if (indexToDelete !== -1) {
+                data.splice(indexToDelete, 1);
+                renderData();
+            } else {
+                alert('Nama tidak ditemukan.');
+            }
+        }
+    </script>
+</body>
+</html>
 
