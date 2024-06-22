@@ -4,7 +4,15 @@
 - 💞️ I’m looking to collaborate on ...
 - 📫 How to reach me ...
 
-<!---
-JavierCraft/JavierCraft is a ✨ special ✨ repository because its `README.md` (this file) appears on your GitHub profile.
-You can click the Preview link to take a look at your changes.
---->
+Coffee coffee = new Coffee();
+if (coffee.Empty)
+{
+	coffee.Reffill();
+}
+else
+{
+	coffe.Drink();
+}
+if motivation <= 0 {
+	coffee++;
+}
