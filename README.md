@@ -13,6 +13,6 @@ else
 {
 	coffe.Drink();
 }
-if motivation <= 0 {
+if idea <= 0 {
 	coffee++;
 }
